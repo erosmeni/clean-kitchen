@@ -9,14 +9,12 @@ import java.util.stream.Collectors;
 
 public class Application {
 
+    private static final int limitForMonday = 4;
+    private static final int limitForOtherDays = 2;
     OrderServiceClient orderServiceClient;
-
     Application(OrderServiceClient orderServiceClient) {
         this.orderServiceClient = orderServiceClient;
     }
-
-    private static int limitForMonday = 4;
-    private static int limitForOtherDays = 2;
 
     public List<Object> availableDeliveryTimes(LocalDate date) {
 
@@ -31,7 +29,7 @@ public class Application {
         Map<Object, Integer> counts = new HashMap<>();
 
         // create a key value pair with time and orders for that time
-        for(Map<String, Object> order: availableTimes) {
+        for (Map<String, Object> order : availableTimes) {
             for (Object c : order.values()) {
                 int value = counts.get(c) == null ? 0 : counts.get(c);
                 counts.put(c, value + 1);
@@ -39,7 +37,7 @@ public class Application {
         }
 
         //check limit for Monday or other days
-        if(day == DayOfWeek.MONDAY) {
+        if (day == DayOfWeek.MONDAY) {
             return counts.entrySet()
                     .stream()
                     .filter(count -> count.getValue() < limitForMonday)
